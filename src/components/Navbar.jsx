@@ -33,6 +33,7 @@ export default function Navbar() {
                     {/* Logo */}
                     <a href="#home" className="flex items-center gap-2 group">
                         <span className="text-2xl">🔥</span>
+                        
                         <span className="text-xl md:text-2xl font-bold text-warm-500 group-hover:text-warm-400 transition-colors">
                             {contact.businessName}
                         </span>
