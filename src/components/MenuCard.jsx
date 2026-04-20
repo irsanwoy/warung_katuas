@@ -1,4 +1,5 @@
 import { contact } from '../data/contact';
+import { Star } from 'lucide-react';
 
 function formatPrice(price) {
     return new Intl.NumberFormat('id-ID').format(price);
@@ -6,7 +7,7 @@ function formatPrice(price) {
 
 function getWhatsAppLink(item) {
     const message = encodeURIComponent(
-        `Halo Warunk Katuas, saya mau pesan:\n- ${item.name} (1x) - Rp${formatPrice(item.price)}\nCatatan: \nNama:\nAmbil/Jadwal:`
+        `Halo Warunk Katuas, saya mau pesan:\n- ${item.nama} (1x) - Rp${formatPrice(item.harga)}\nCatatan: \nNama:\nAmbil/Jadwal:`
     );
     return `https://wa.me/${contact.whatsapp}?text=${message}`;
 }
@@ -16,10 +17,10 @@ export default function MenuCard({ item }) {
         <div className="group relative flex flex-col bg-dark-card/70 border border-dark-border rounded-2xl overflow-hidden hover:border-warm-500/30 hover:shadow-lg hover:shadow-warm-500/5 transition-all duration-300 hover:-translate-y-1">
             {/* Image */}
             <div className="relative h-44 sm:h-48 bg-dark-secondary overflow-hidden">
-                {item.image ? (
+                {item.image_url ? (
                     <img
-                        src={item.image}
-                        alt={item.name}
+                        src={item.image_url}
+                        alt={item.nama}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         loading="lazy"
                     />
@@ -31,24 +32,31 @@ export default function MenuCard({ item }) {
 
                 {/* Category badge */}
                 <span className="absolute top-3 right-3 px-3 py-1 bg-dark-primary/80 backdrop-blur-sm border border-dark-border rounded-full text-xs font-medium text-warm-400">
-                    {item.category}
+                    {item.kategori}
                 </span>
+
+                {/* Favorite badge */}
+                {item.is_favorit && (
+                    <span className="absolute top-3 left-3 w-8 h-8 flex items-center justify-center bg-dark-primary/80 backdrop-blur-sm border border-dark-border rounded-full text-yellow-400 shadow-md">
+                        <Star className="w-4 h-4 fill-yellow-400" />
+                    </span>
+                )}
             </div>
 
             {/* Content */}
             <div className="flex flex-col flex-1 p-5">
                 <h3 className="text-lg font-bold text-text-primary mb-1">
-                    {item.name}
+                    {item.nama}
                 </h3>
-                {item.description && (
+                {item.deskripsi && (
                     <p className="text-sm text-text-secondary mb-4 line-clamp-2 leading-relaxed">
-                        {item.description}
+                        {item.deskripsi}
                     </p>
                 )}
 
                 <div className="mt-auto flex items-center justify-between gap-3">
                     <span className="text-xl font-extrabold text-warm-500">
-                        Rp{formatPrice(item.price)}
+                        Rp{formatPrice(item.harga)}
                     </span>
                     <a
                         href={getWhatsAppLink(item)}

@@ -1,17 +1,32 @@
-import { useState } from 'react';
-import { menuItems, categories } from '../data/menu';
+import { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 import MenuCard from './MenuCard';
+
+const categories = ["Semua", "Makanan", "Minuman", "Paket"];
 
 export default function Menu() {
     const [activeCategory, setActiveCategory] = useState('Semua');
     const [searchQuery, setSearchQuery] = useState('');
+    const [menuItems, setMenuItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchMenus = async () => {
+            const { data, error } = await supabase.from('menus').select('*').order('created_at', { ascending: false });
+            if (!error && data) {
+                setMenuItems(data);
+            }
+            setLoading(false);
+        };
+        fetchMenus();
+    }, []);
 
     const filteredItems = menuItems.filter((item) => {
         const matchesCategory =
-            activeCategory === 'Semua' || item.category === activeCategory;
+            activeCategory === 'Semua' || item.kategori === activeCategory;
         const matchesSearch =
-            item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()));
+            item.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (item.deskripsi && item.deskripsi.toLowerCase().includes(searchQuery.toLowerCase()));
         return matchesCategory && matchesSearch;
     });
 
@@ -75,7 +90,11 @@ export default function Menu() {
                 </div>
 
                 {/* Menu grid */}
-                {filteredItems.length > 0 ? (
+                {loading ? (
+                    <div className="flex justify-center py-16">
+                        <div className="w-10 h-10 border-4 border-warm-500 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                ) : filteredItems.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredItems.map((item) => (
                             <MenuCard key={item.id} item={item} />

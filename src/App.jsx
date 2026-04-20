@@ -1,6 +1,10 @@
 import { HelmetProvider, Helmet } from 'react-helmet-async';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import { contact } from './data/contact';
 import { schedule } from './data/schedule';
+
+// Public Components
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Keunggulan from './components/Keunggulan';
@@ -10,6 +14,12 @@ import JamBuka from './components/JamBuka';
 import Galeri from './components/Galeri';
 import Kontak from './components/Kontak';
 import Footer from './components/Footer';
+
+// Admin Components
+import AdminLayout from './pages/admin/AdminLayout';
+import Login from './pages/admin/Login';
+import Dashboard from './pages/admin/Dashboard';
+import Settings from './pages/admin/Settings';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -29,6 +39,24 @@ const jsonLd = {
   servesCuisine: 'Indonesian',
   priceRange: 'Rp2.000 - Rp18.000',
 };
+
+function PublicLayout() {
+  return (
+    <>
+      <Navbar />
+      <main>
+        <Hero />
+        <Keunggulan />
+        <Menu />
+        <Lokasi />
+        <JamBuka />
+        <Galeri />
+        <Kontak />
+      </main>
+      <Footer />
+    </>
+  );
+}
 
 export default function App() {
   return (
@@ -62,17 +90,22 @@ export default function App() {
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
-      <Navbar />
-      <main>
-        <Hero />
-        <Keunggulan />
-        <Menu />
-        <Lokasi />
-        <JamBuka />
-        <Galeri />
-        <Kontak />
-      </main>
-      <Footer />
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Public Route */}
+            <Route path="/" element={<PublicLayout />} />
+
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<Login />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </HelmetProvider>
   );
 }
