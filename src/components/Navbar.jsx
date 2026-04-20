@@ -51,6 +51,12 @@ export default function Navbar() {
                             </a>
                         ))}
                         <a
+                            href="/admin"
+                            className="px-4 py-2 ml-2 rounded-lg text-sm font-medium text-text-secondary hover:text-warm-400 hover:bg-white/5 transition-all duration-200 border border-dark-border hover:border-warm-500/30"
+                        >
+                            Login Admin
+                        </a>
+                        <a
                             href={`https://wa.me/${contact.whatsapp}`}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -93,6 +99,13 @@ export default function Navbar() {
                             {link.label}
                         </a>
                     ))}
+                    <a
+                        href="/admin"
+                        onClick={handleLinkClick}
+                        className="block px-4 py-3 border border-dark-border rounded-xl text-center text-text-secondary hover:text-warm-400 font-medium transition-colors"
+                    >
+                        Login Admin
+                    </a>
                     <a
                         href={`https://wa.me/${contact.whatsapp}`}
                         target="_blank"
