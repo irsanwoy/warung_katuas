@@ -14,6 +14,9 @@ import JamBuka from './components/JamBuka';
 import Galeri from './components/Galeri';
 import Kontak from './components/Kontak';
 import Footer from './components/Footer';
+import { CartProvider } from './context/CartContext';
+import CartIcon from './components/CartIcon';
+import CartDrawer from './components/CartDrawer';
 
 // Admin Components
 import AdminLayout from './pages/admin/AdminLayout';
@@ -53,6 +56,8 @@ function PublicLayout() {
         <Galeri />
         <Kontak />
       </main>
+      <CartIcon />
+      <CartDrawer />
       <Footer />
     </>
   );
@@ -91,20 +96,22 @@ export default function App() {
       </Helmet>
 
       <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            {/* Public Route */}
-            <Route path="/" element={<PublicLayout />} />
+        <CartProvider>
+          <BrowserRouter>
+            <Routes>
+              {/* Public Route */}
+              <Route path="/" element={<PublicLayout />} />
 
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<Login />} />
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="settings" element={<Settings />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<Login />} />
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="settings" element={<Settings />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
       </AuthProvider>
     </HelmetProvider>
   );
